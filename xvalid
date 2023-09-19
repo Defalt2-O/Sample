@@ -1,0 +1,15 @@
+from lxml import etree
+import xmlschema
+# if we write xsd_file = etree.parse("employee_schema copy.xsd"), it isnt an active xsd file. we need to use xmlschema.XMLSchema
+xml_file = etree.parse('employee copy.xml')
+xsd_file = xmlschema.XMLSchema("employee_schema copy.xsd")
+
+if xsd_file.is_valid(xml_file):
+    print("XML Data is valid in accordance with the given schema")
+    activated_transformer = etree.XSLT(etree.parse("employee_transform copy.xsl"))
+    html_version = activated_transformer(xml_file)
+    with open('output_copy.html', 'wb') as output_file:
+        output_file.write(html_version)
+    print("Output saved to output_copy.html")
+else:
+    print("XML not valid according to schema")
